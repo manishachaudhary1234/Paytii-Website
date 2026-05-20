@@ -3,6 +3,10 @@ import './globals.css'
 export const metadata = {
   title: 'PAYTII — The Operating System for Trade',
   description: "PAYTII connects brands with retailers through a trade communication and engagement platform built for India's general trade ecosystem.",
+  icons: {
+    icon: '/assets/paytii-b.jpeg',
+    apple: '/assets/paytii-b.jpeg',
+  },
 }
 
 export default function RootLayout({ children }) {
