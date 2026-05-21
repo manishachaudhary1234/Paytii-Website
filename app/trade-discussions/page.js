@@ -3,8 +3,8 @@ import { urlFor } from '../../sanity/lib/image'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Insights — PAYTII',
-  description: 'Read the latest articles and insights from PAYTII on trade, retail, and brand growth.',
+  title: 'Trade Discussions — PAYTII',
+  description: 'Trade insights, brand strategies, and retail trends from PAYTII.',
 }
 
 async function getPosts() {
@@ -23,7 +23,7 @@ export default async function InsightsPage() {
 
   return (
     <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 24px' }}>
-      <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '16px' }}>Insights</h1>
+      <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '16px' }}>Trade Discussions</h1>
       <p style={{ color: 'var(--muted)', marginBottom: '56px', fontSize: '1.125rem' }}>
         Trade insights, brand strategies, and retail trends from PAYTII.
       </p>
@@ -36,7 +36,7 @@ export default async function InsightsPage() {
         {posts.map((post) => (
           <Link
             key={post.slug.current}
-            href={`/insights/${post.slug.current}`}
+            href={`/trade-discussions/${post.slug.current}`}
             style={{ textDecoration: 'none', color: 'inherit' }}
           >
             <article style={{

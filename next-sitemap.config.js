@@ -13,7 +13,7 @@ module.exports = {
   additionalPaths: async () => {
     const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current, publishedAt }`)
     return posts.map((post) => ({
-      loc: `/insights/${post.slug}`,
+      loc: `/trade-discussions/${post.slug}`,
       lastmod: post.publishedAt || new Date().toISOString(),
       changefreq: 'weekly',
       priority: 0.7,

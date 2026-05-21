@@ -1,8 +1,22 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
+const PROJECT_ID = '4tlm8bbe'
+const DATASET = 'production'
+const API_VERSION = '2026-05-20'
+
+async function fetchPosts() {
+  const query = encodeURIComponent(`*[_type == "post"] | order(publishedAt desc)[0..2] { title, slug, publishedAt, mainImage }`)
+  const url = `https://${PROJECT_ID}.apicdn.sanity.io/v${API_VERSION}/data/query/${DATASET}?query=${query}`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Sanity fetch failed: ${res.status}`)
+  const json = await res.json()
+  return json.result || []
+}
 
 export default function Home() {
+  const [posts, setPosts] = useState([])
   useEffect(() => {
     const root = document.documentElement
     const toggle = document.querySelector('[data-theme-toggle]')
@@ -61,6 +75,10 @@ export default function Home() {
     }
   }, [])
 
+  useEffect(() => {
+    fetchPosts().then(setPosts).catch(() => {})
+  }, [])
+
   return (
     <>
       <a className="skip-link" href="#main">Skip to content</a>
@@ -79,6 +97,7 @@ export default function Home() {
             <div className="nav-links">
               <a href="#product">Product</a>
               <a href="#market">Market</a>
+              <a href="#trade-discussions">Trade Discussions</a>
               <a href="#contact">Contact</a>
             </div>
 
@@ -99,6 +118,7 @@ export default function Home() {
           <div className="mobile-panel" id="mobileMenu">
             <a href="#product">Product</a>
             <a href="#market">Market</a>
+            <a href="#trade-discussions">Trade Discussions</a>
             <a href="#contact">Contact</a>
             <a className="btn btn-primary" href="#contact">Book a Demo</a>
           </div>
@@ -200,6 +220,95 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="section" id="trade-discussions">
+          <div className="container">
+            <div className="section-head reveal" style={{ marginBottom: '40px' }}>
+              <span className="eyebrow">Trade Discussions</span>
+              <h2 style={{ marginTop: '10px', marginBottom: 0 }}>Insights on trade, retail, and brand growth.</h2>
+            </div>
+
+            {posts.length === 0 ? (
+              <p style={{ color: 'var(--muted)' }}>No articles published yet.</p>
+            ) : (
+              <>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                  gap: '24px',
+                }}>
+                  {posts.map(post => (
+                    <a
+                      key={post.slug.current}
+                      href={`/trade-discussions/${post.slug.current}`}
+                      style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        background: 'var(--surface)',
+                        borderRadius: 'var(--radius-md)',
+                        border: '1px solid var(--line)',
+                        overflow: 'hidden',
+                        display: 'block',
+                        transition: 'box-shadow 0.2s, transform 0.2s',
+                      }}
+                    >
+                      {post.mainImage && (
+                        <img
+                          src={`https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${post.mainImage.asset._ref.replace('image-', '').replace(/-(\w+)$/, '.$1')}`}
+                          alt={post.mainImage.alt || post.title}
+                          style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }}
+                        />
+                      )}
+                      <div style={{ padding: '20px' }}>
+                        {post.publishedAt && (
+                          <p style={{ color: 'var(--muted)', fontSize: '0.78rem', marginBottom: '8px' }}>
+                            {new Date(post.publishedAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}
+                          </p>
+                        )}
+                        <h3 style={{ fontSize: '1rem', fontWeight: 700, lineHeight: 1.4, margin: 0 }}>
+                          {post.title}
+                        </h3>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '48px' }}>
+                  <a
+                    href="/trade-discussions"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '10px',
+                      padding: '14px 32px',
+                      background: 'var(--surface)',
+                      border: '1px solid var(--line)',
+                      borderRadius: 'var(--radius-xl)',
+                      color: 'var(--text)',
+                      textDecoration: 'none',
+                      fontWeight: 600,
+                      fontSize: '0.95rem',
+                      transition: 'background 0.2s, border-color 0.2s',
+                    }}
+                  >
+                    View all articles
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      background: 'var(--primary)',
+                      color: '#fff',
+                      fontSize: '1rem',
+                    }}>→</span>
+                  </a>
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+
         <section className="section" id="contact">
           <div className="container">
             <div className="cta-shell reveal">
@@ -249,6 +358,7 @@ export default function Home() {
             <a href="#problem">Problem</a>
             <a href="#solution">Solution</a>
             <a href="#product">Product</a>
+            <a href="#trade-discussions">Trade Discussions</a>
             <a href="#contact">Contact</a>
           </div>
 

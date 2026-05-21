@@ -10,7 +10,8 @@ async function getPost(slug) {
       publishedAt,
       mainImage,
       body,
-      "author": author->name
+      "author": author->name,
+      seo
     }`,
     { slug }
   )
@@ -20,11 +21,24 @@ export async function generateMetadata({ params }) {
   const { slug } = await params
   const post = await getPost(slug)
   if (!post) return {}
+
+  const seo = post.seo || {}
+  const title = seo.metaTitle || `${post.title} — PAYTII Insights`
+  const description = seo.metaDescription || ''
+  const ogImage = seo.ogImage
+    ? urlFor(seo.ogImage).width(1200).height(630).url()
+    : post.mainImage
+    ? urlFor(post.mainImage).width(1200).height(630).url()
+    : undefined
+
   return {
-    title: `${post.title} — PAYTII Insights`,
+    title,
+    description,
+    alternates: seo.canonicalUrl ? { canonical: seo.canonicalUrl } : undefined,
     openGraph: {
-      title: post.title,
-      images: post.mainImage ? [urlFor(post.mainImage).width(1200).height(630).url()] : [],
+      title,
+      description,
+      images: ogImage ? [ogImage] : [],
     },
   }
 }
@@ -74,8 +88,8 @@ export default async function PostPage({ params }) {
       </div>
 
       <div style={{ marginTop: '56px', paddingTop: '32px', borderTop: '1px solid var(--line)' }}>
-        <a href="/insights" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>
-          ← Back to Insights
+        <a href="/trade-discussions" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>
+          ← Back to Trade Discussions
         </a>
       </div>
     </main>
