@@ -23,6 +23,16 @@ export default async function InsightsPage() {
 
   return (
     <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 24px' }}>
+      <nav aria-label="Breadcrumb" style={{ marginBottom: '24px' }}>
+        <ol style={{ display: 'flex', alignItems: 'center', gap: '6px', listStyle: 'none', margin: 0, padding: 0, fontSize: '0.875rem', color: 'var(--muted)' }}>
+          <li>
+            <Link href="/" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500 }}>Home</Link>
+          </li>
+          <li aria-hidden="true" style={{ userSelect: 'none' }}>›</li>
+          <li aria-current="page" style={{ fontWeight: 600, color: 'var(--text)' }}>Trade Discussions</li>
+        </ol>
+      </nav>
+
       <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '16px' }}>Trade Discussions</h1>
       <p style={{ color: 'var(--muted)', marginBottom: '56px', fontSize: '1.125rem' }}>
         Trade insights, brand strategies, and retail trends from PAYTII.

@@ -2,6 +2,7 @@ import { fetchSanity } from '../../lib/fetchSanity'
 import { urlFor } from '../../../sanity/lib/image'
 import { PortableText } from '@portabletext/react'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -64,8 +65,37 @@ export default async function PostPage({ params }) {
     notFound()
   }
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.paytii.com' },
+      { '@type': 'ListItem', position: 2, name: 'Trade Discussions', item: 'https://www.paytii.com/trade-discussions' },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `https://www.paytii.com/trade-discussions/${slug}` },
+    ],
+  }
+
   return (
     <main style={{ maxWidth: '800px', margin: '0 auto', padding: '80px 24px' }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
+      <nav aria-label="Breadcrumb" style={{ marginBottom: '24px' }}>
+        <ol style={{ display: 'flex', alignItems: 'center', gap: '6px', listStyle: 'none', margin: 0, padding: 0, fontSize: '0.875rem', color: 'var(--muted)' }}>
+          <li>
+            <Link href="/" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500 }}>Home</Link>
+          </li>
+          <li aria-hidden="true" style={{ userSelect: 'none' }}>›</li>
+          <li>
+            <Link href="/trade-discussions" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: 500 }}>Trade Discussions</Link>
+          </li>
+          <li aria-hidden="true" style={{ userSelect: 'none' }}>›</li>
+          <li aria-current="page" style={{ fontWeight: 600, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '240px' }}>{post.title}</li>
+        </ol>
+      </nav>
+
       {post.mainImage && (
         <img
           src={urlFor(post.mainImage).width(1200).height(630).url()}
