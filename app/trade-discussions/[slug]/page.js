@@ -1,6 +1,10 @@
 import { fetchSanity } from '../../lib/fetchSanity'
 import { urlFor } from '../../../sanity/lib/image'
 import { PortableText } from '@portabletext/react'
+import { notFound } from 'next/navigation'
+
+export const revalidate = 60
+export const dynamicParams = true
 
 async function getPost(slug) {
   return fetchSanity(
@@ -20,7 +24,7 @@ async function getPost(slug) {
 export async function generateMetadata({ params }) {
   const { slug } = await params
   const post = await getPost(slug)
-  if (!post) return {}
+  if (!post) return { robots: { index: false, follow: false } }
 
   const seo = post.seo || {}
   const title = seo.metaTitle || `${post.title} — PAYTII Insights`
@@ -34,7 +38,9 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
-    alternates: seo.canonicalUrl ? { canonical: seo.canonicalUrl } : undefined,
+    alternates: {
+      canonical: seo.canonicalUrl || `https://www.paytii.com/trade-discussions/${slug}`,
+    },
     openGraph: {
       title,
       description,
@@ -44,8 +50,10 @@ export async function generateMetadata({ params }) {
 }
 
 export async function generateStaticParams() {
-  const slugs = await fetchSanity(`*[_type == "post"]{ "slug": slug.current }`)
-  return (slugs || []).map((s) => ({ slug: s.slug }))
+  const slugs = await fetchSanity(`*[_type == "post" && defined(slug.current)]{ "slug": slug.current }`)
+  return (slugs || [])
+    .filter((s) => typeof s?.slug === 'string' && s.slug.trim().length > 0)
+    .map((s) => ({ slug: s.slug }))
 }
 
 export default async function PostPage({ params }) {
@@ -53,11 +61,7 @@ export default async function PostPage({ params }) {
   const post = await getPost(slug)
 
   if (!post) {
-    return (
-      <main style={{ maxWidth: '800px', margin: '0 auto', padding: '80px 24px' }}>
-        <h1>Post not found</h1>
-      </main>
-    )
+    notFound()
   }
 
   return (
