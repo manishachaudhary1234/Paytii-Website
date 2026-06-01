@@ -1,10 +1,10 @@
 export default function CookiePolicy() {
   return (
-    <main className="container" style={{ padding: '48px 0' }}>
+    <main style={{ background: '#fff', color: '#000', padding: '48px 0' }}>
       <article style={{ maxWidth: 880, margin: '0 auto' }}>
-        <div style={{ padding: 28, background: 'var(--surface)', borderRadius: 12, boxShadow: '0 6px 20px rgba(0,0,0,0.04)' }}>
+        <div style={{ padding: 28, background: '#fff', color: '#000', borderRadius: 12, boxShadow: '0 6px 20px rgba(0,0,0,0.04)' }}>
           <h1 style={{ fontSize: '1.4rem', margin: '0 0 8px' }}>Cookie Policy</h1>
-          <p style={{ color: 'var(--muted)', marginTop: 0 }}>Last Updated: May 2026</p>
+          <p style={{ color: '#000', marginTop: 0 }}>Last Updated: May 2026</p>
 
         <p>
           This Cookie Policy explains how Brandtooretail Private Limited ("Company", "we",
