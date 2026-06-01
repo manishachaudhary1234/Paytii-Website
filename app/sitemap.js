@@ -34,5 +34,26 @@ export default async function sitemap() {
     lastModified: post._updatedAt || post.publishedAt || new Date(),
   }))
 
+  const privacyPolicyRoute = {
+    url: `${baseUrl}/privacy-policy`,
+    changeFrequency: 'yearly',
+    priority: 0.5,
+    lastModified: new Date(),
+  }
+
+  const termsRoute = {
+    url: `${baseUrl}/terms`,
+    changeFrequency: 'yearly',
+    priority: 0.5,
+    lastModified: new Date(),
+  }
+  
+  const cookiePolicyRoute = { 
+    url: `${baseUrl}/cookie-policy`,
+    changeFrequency: 'yearly',
+    priority: 0.5,
+    lastModified: new Date(),
+  }
+
   return [...staticRoutes, ...postRoutes]
 }
