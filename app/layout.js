@@ -1,4 +1,5 @@
 import './globals.css'
+import CookieConsent from './components/CookieConsent'
 
 export const metadata = {
   title: 'PAYTII — The Operating System for Trade',
@@ -20,7 +21,10 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <CookieConsent />
+      </body>
     </html>
   )
 }

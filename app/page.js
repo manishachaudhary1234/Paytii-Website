@@ -360,6 +360,9 @@ export default function Home() {
             <a href="#product">Product</a>
             <a href="#trade-discussions">Trade Discussions</a>
             <a href="#contact">Contact</a>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/cookie-policy">Cookie Policy</a>
+            <a href="/terms">Terms & Conditions</a>
           </div>
 
           <div className="footer-copy">
