@@ -55,5 +55,5 @@ export default async function sitemap() {
     lastModified: new Date(),
   }
 
-  return [...staticRoutes, ...postRoutes]
+  return [...staticRoutes, ...postRoutes, privacyPolicyRoute, termsRoute, cookiePolicyRoute]
 }
